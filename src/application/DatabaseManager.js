@@ -12,7 +12,6 @@ export default class DatabaseManager {
             if(this.connection){
                 resolve(this.connection);
             } else {
-                console.log(process.env.CONNECTION_STRING)
                 MongoClient.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true }, (err, client) => {  
                     this.connection = client.db(process.env.DATABASE_NAME);
                     if(!err){

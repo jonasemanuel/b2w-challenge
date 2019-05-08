@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha ./src/test",
-    "start": "nodemon --exec babel-node --inspect ./src/index.js",
-    "build": "babel src -d dist --source-maps --watch"
+    "start": "nodemon --exec babel-node ./src/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +18,7 @@
   },
   "homepage": "https://github.com/JonasEmanuel/b2w-challenge#readme",
   "dependencies": {
+    "assert": "^1.5.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
