@@ -7,8 +7,3 @@
 
 OBS: É preciso que haja o MongoDB rodando na máquina.
 OBS: É preciso que haja o Redis rodando na máquina.
-
-**A aplicação está disponível em:**
-https://b2w-challenge.herokuapp.com
-
-**Documentação**
