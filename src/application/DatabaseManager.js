@@ -1,5 +1,5 @@
 import { MongoClient } from 'mongodb';
-import Application from './Application';
+import dotenv from 'dotenv'
 
 export default class DatabaseManager {
     constructor() {
@@ -7,12 +7,14 @@ export default class DatabaseManager {
     }
 
     static getConnection(){
+        dotenv.config();
         return new Promise((resolve, reject) => {
             if(this.connection){
                 resolve(this.connection);
             } else {
-                MongoClient.connect(Application.getConfig().connectionString, { useNewUrlParser: true }, (err, client) => {  
-                    this.connection = client.db(Application.getConfig().databaseName);
+                console.log(process.env.CONNECTION_STRING)
+                MongoClient.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true }, (err, client) => {  
+                    this.connection = client.db(process.env.DATABASE_NAME);
                     if(!err){
                         resolve(this.connection);
                     } else {

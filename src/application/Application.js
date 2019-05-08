@@ -1,15 +1,19 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import { MongoClient } from 'mongodb';
+import dotenv from 'dotenv';
 import cors from 'cors';
 
-import orderRoute from '../routes/order.route';
-import resourceRoutes from '../routes/planet.route';
+import planetRoutes from '../routes/planet.route';
+import CacheManager from './CacheManager';
+import PlanetTask from '../tasks/PlanetTask';
 
 export default class Application {
     constructor() { 
         this.app = express();
         this.router = express.Router();
+        this.cacheManager = new CacheManager();
+        dotenv.config()
     }
 
     init() {
@@ -19,33 +23,29 @@ export default class Application {
         
         this.connectDatabase();
         this.loadRoutes();
+        this.runTasks();
 
-        this.app.listen(process.env.PORT || this.getConfig().port, () => {
-            console.log(`Server running on port ${this.getConfig().port}`);
+        this.app.listen(process.env.PORT, () => {
+            console.log(`Server running on port ${process.env.PORT}`);
         });
     }
 
+    runTasks(){
+        new PlanetTask().run();
+    }
+
     loadRoutes(){
-        this.app.use('/api', this.router);
-        resourceRoutes(this.router);
-        orderRoute(this.router);
+        this.app.use('/', this.router);
+        planetRoutes(this.router);
     }
 
     connectDatabase() {
-        MongoClient.connect(this.getConfig().connectionString, { useNewUrlParser: true }, (err, client) => {
+        MongoClient.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true }, (err, client) => {
             if(!err){
                 console.log("MongoDB - OK");
             } else {
                 console.log(err);
             }
         });
-    }
-
-    static getConfig() {
-        return {
-            port: 9000,
-            connectionString: "mongodb+srv://root:root@maincluster-bzgfm.mongodb.net",
-            databaseName: "b2wChallenge"
-        }
     }
 }

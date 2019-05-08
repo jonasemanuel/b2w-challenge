@@ -20,11 +20,11 @@ export default class DefaultRepository {
         });
     }
 
-    async findAll() {
+    async findAll(params) {
         let database = await DatabaseManager.getConnection();
         return new Promise((resolve, reject) => {
             let collection = database.collection(this.modelName);
-            collection.find({}).toArray((err, result) => {
+            collection.find(params).toArray((err, result) => {
                 if(!err){
                     resolve(result);
                 } else {
@@ -49,10 +49,13 @@ export default class DefaultRepository {
     }
 
     async update(document) {
+        let objectToUpdate = Object.assign({}, document);
         let database = await DatabaseManager.getConnection();
+        let id = objectToUpdate._id;
+        delete objectToUpdate._id;
         return new Promise((resolve, reject) => {
             let collection = database.collection(this.modelName);
-            collection.updateOne({ _id: ObjectId(_id) }, { $set: document }, (err, result) => {
+            collection.updateOne({ _id: ObjectId(id) }, { $set: objectToUpdate }, (err, result) => {
                 if(!err){
                     resolve(result);
                 } else {

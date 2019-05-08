@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["Application","init"],"mappings":";;AAAA;;;;;;AAEA,IAAIA,qBAAJ,GAAkBC,IAAlB","file":"index.js","sourcesContent":["import Application from './application/Application';\r\n\r\nnew Application().init();"]}
